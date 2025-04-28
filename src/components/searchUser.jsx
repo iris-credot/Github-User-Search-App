@@ -57,16 +57,19 @@ useEffect(()=>{
     </div>
     <div className="bg-[#FEFEFE] w-full h-[50px] rounded-lg flex space-x-40 dark:bg-[#1E2A47]">
         <div className="flex justify-center items-center p-5 space-x-4">
-        <div>  <FontAwesomeIcon icon={faSearch} className="text-[#0079FF]" size="lg" /></div>
+        <div>  <FontAwesomeIcon icon={faSearch} className="text-[#0079FF] " size="lg" /></div>
         <input
             type="text"
             placeholder="Search GitHub username..."
-           className="text-[14px] text-[#4B6A9B] dark:text-white focus:outline-none dark:bg-transparent "
+           className="text-[14px] text-[#4B6A9B] dark:text-white focus:outline-none dark:bg-transparent w-full font-sans"
             value={search}
-            onChange={(e) => setSearch(e.target.value)} // Update username state
+            onChange={(e) => setSearch(e.target.value)} 
+
           />
         </div>
-        <button className="px-5 h-[30px] bg-[#0079FF] rounded-md inline-block text-[#FEFEFE] text-[12px] mt-3 " onClick={()=>{searchUser(search)}}>Search</button>
+        <button  className={`px-5 h-[30px] bg-[#0079FF] rounded-md inline-block text-[#FEFEFE] text-[12px] mt-3 ${
+    search.trim() && !error ? "cursor-pointer opacity-60" : "hover:bg-blue-400"
+  }`} onClick={()=>{searchUser(search)}}>Search</button>
     </div>
 
            {loading ? (  <p>Loading...</p>) : error ? (<p style={{ color: "red" }}>{error}</p>  ) : (  <GithubUsers user={user} />)}

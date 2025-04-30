@@ -2,13 +2,13 @@ import React,{useState,useEffect} from "react";
 import GithubUsers from './userDetails';   
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon,faSun,faSearch } from '@fortawesome/free-solid-svg-icons';
+import { useTheme } from "./theme";
 export default function SearchUsers(){
 const [user,setUser]=useState('');
 const[search,setSearch]=useState('');
 const [loading, setLoading] = useState(true);
 const [error, setError] = useState(null);
-const [darkMode, setDarkMode] = useState(false);
-
+const { darkMode, toggleDarkMode } = useTheme();
 
 const searchUser =async(username)=>{
     const apiUrl=`https://api.github.com/users/${username}`;
@@ -36,24 +36,8 @@ const searchUser =async(username)=>{
 useEffect(()=>{
     searchUser('iris-credot');
     },[]);
-    useEffect(() => {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-          document.documentElement.classList.add('dark');
-          setDarkMode(true);
-        }
-      }, []);
-      const toggleDarkMode = () => {
-        if (darkMode) {
-        
-          document.documentElement.classList.remove('dark');
-          localStorage.setItem('theme', 'light');
-        } else {
-          document.documentElement.classList.add('dark');
-          localStorage.setItem('theme', 'dark');
-        }
-        setDarkMode(!darkMode);
-      };
+  
+    
     return(
 <div className="flex flex-col  justify-center items-center max-w-lg w-full space-y-4 m-20">
 <div className="bg-transparent flex flex-row justify-between  w-full p-4 h-[40px] ">

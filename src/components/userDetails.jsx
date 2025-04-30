@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot,faLink, faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 
-export default function GithubUsers({user}){
-    const { bio, blog,created_at,followers,following,location,login,name,public_repos,avatar_url,twitter_username,company} = user;
+export default function GithubUsers({userOne}){
+    const { bio, blog,created_at,followers,following,location,login,name,public_repos,avatar_url,twitter_username,company} = userOne;
     
 const date = new Date(created_at);
 

@@ -9,18 +9,25 @@ const [loading, setLoading] = useState(true);
 const [error, setError] = useState(null);
 const [darkMode, setDarkMode] = useState(false);
 
+
 const searchUser =async(username)=>{
     const apiUrl=`https://api.github.com/users/${username}`;
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
-          setUser(data);
-          console.log(data);
-          setError(''); // Store weather data if request is successful
+         
+    if (data.message === "Not Found") {
+      setUser(null);     
+      setError("User not found");
+    } else {
+      setUser(data);
+      setError("");
+    }
                }
       catch (error) {
         console.error("Request failed:", error);
         setError(error.message);
+        setUser(null); 
       }
       finally{
         setLoading(false);
@@ -28,7 +35,7 @@ const searchUser =async(username)=>{
 }
 useEffect(()=>{
     searchUser('iris-credot');
-    },[search]);
+    },[]);
     useEffect(() => {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
@@ -38,6 +45,7 @@ useEffect(()=>{
       }, []);
       const toggleDarkMode = () => {
         if (darkMode) {
+        
           document.documentElement.classList.remove('dark');
           localStorage.setItem('theme', 'light');
         } else {
@@ -63,16 +71,27 @@ useEffect(()=>{
             placeholder="Search GitHub username..."
            className="text-[14px] text-[#4B6A9B] dark:text-white focus:outline-none dark:bg-transparent w-full font-sans"
             value={search}
-            onChange={(e) => setSearch(e.target.value)} 
+            onChange={(e) => {
+              setSearch(e.target.value);
+           
+            }}
 
           />
         </div>
         <button  className={`px-5 h-[30px] bg-[#0079FF] rounded-md inline-block text-[#FEFEFE] text-[12px] mt-3 ${
     search.trim() && !error ? "cursor-pointer opacity-60" : "hover:bg-blue-400"
-  }`} onClick={()=>{searchUser(search)}}>Search</button>
+  }`} onClick={() => {
+      setLoading(true);
+    searchUser(search);
+  }}>Search</button>
     </div>
 
-           {loading ? (  <p>Loading...</p>) : error ? (<p style={{ color: "red" }}>{error}</p>  ) : (  <GithubUsers user={user} />)}
+           {loading ? (  <p>Loading...</p>) : error ? (<p style={{ color: "red" }}>{error}</p>  ) : user ? (
+        <GithubUsers userOne={user} />
+      )
+       : 
+       (<p>No User Found...</p>)
+       }
 </div>
     );
 }
